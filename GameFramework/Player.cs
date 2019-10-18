@@ -8,13 +8,16 @@ namespace GameFramework
 {
     class Player : Entity
     {
+        //Creates a new Player represented by the '@' symbol and adds movement key events
         public Player() : this('@')
         {
 
         }
 
+        //Creates a new Player with the specified symbol and adds movement key events
         public Player(char icon) : base(icon)
         {
+            //Bind movement methods to the arrow keys
             PlayerInput.AddKeyEvent(MoveLeft, ConsoleKey.LeftArrow);
             PlayerInput.AddKeyEvent(MoveRight, ConsoleKey.RightArrow);
             PlayerInput.AddKeyEvent(MoveUp, ConsoleKey.UpArrow);
@@ -24,7 +27,7 @@ namespace GameFramework
         //Move one space to the up
         private void MoveUp()
         {
-            if (Y > 0)
+            if (!CurrentScene.GetCollision(X, Y - 1))
             {
                 Y--;
             }
@@ -33,7 +36,7 @@ namespace GameFramework
         //Move one space to the down
         private void MoveDown()
         {
-            if (Y < CurrentScene.SizeY - 1)
+            if (!CurrentScene.GetCollision(X, Y + 1))
             {
                 Y++;
             }
@@ -42,7 +45,7 @@ namespace GameFramework
         //Move one space to the left
         private void MoveLeft()
         {
-            if (X > 0)
+            if (!CurrentScene.GetCollision(X - 1, Y))
             {
                 X--;
             }
@@ -51,7 +54,7 @@ namespace GameFramework
         //Move one space to the right
         private void MoveRight()
         {
-            if (X < CurrentScene.SizeX-1)
+            if (!CurrentScene.GetCollision(X + 1, Y))
             {
                 X++;
             }

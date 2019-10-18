@@ -8,22 +8,31 @@ namespace GameFramework
 {
     class Scene
     {
+        //The list of all the Entities in the Scene
         private List<Entity> _entities = new List<Entity>();
-        private int _sizeX;
-        private int _sizeY;
+        //The size of the Scene
+        private int _sizeX, _sizeY;
+        //The grid for collision detection
+        private bool[,] _collision;
 
-        public Scene()
+        //Creates a new Scene with a size of 24x6
+        public Scene() : this(24, 6)
         {
-            _sizeX = 24;
-            _sizeY = 6;
+
         }
 
+        //Creates a new Scene with the specified size
+        //sizeX: the horizontal size of the Scene
+        //sizeY: the vertical size of the Scene
         public Scene(int sizeX, int sizeY)
         {
             _sizeX = sizeX;
             _sizeY = sizeY;
+            //Create the collision grid
+            _collision = new bool[_sizeX, _sizeY];
         }
 
+        //The horizontal size of the Scene
         public int SizeX
         {
             get
@@ -32,6 +41,7 @@ namespace GameFramework
             }
         }
 
+        //The vertical size of the Scene
         public int SizeY
         {
             get
@@ -40,6 +50,7 @@ namespace GameFramework
             }
         }
 
+        //Called in Game when the Scene should begin
         public void Start()
         {
             foreach (Entity e in _entities)
@@ -48,31 +59,51 @@ namespace GameFramework
             }
         }
 
+        //Called in Game every step to update each Entity in the Scene
         public void Update()
         {
+            //Clear the collision grid
+            _collision = new bool[_sizeX, _sizeY];
+
             foreach (Entity e in _entities)
             {
+                //Call the Entity's Update events
                 e.Update();
+                //Set the Entity's collision in the collision grid
+                int x = (int)e.X;
+                int y = (int)e.Y;
+                if (x >= 0 && x < _sizeX
+                    && y >= 0 && y < _sizeY)
+                {
+                    //Only update this point in the grid if the Entity is solid
+                    if (!_collision[x, y])
+                    {
+                        _collision[x, y] = e.Solid;
+                    }
+                }
             }
         }
 
+        //Called in Game every step to render each Entity in the Scene
         public void Draw()
         {
             //Clear the screen
             Console.Clear();
 
-            //Create the display buffer
+            //Create the display grid
             char[,] display = new char[_sizeX, _sizeY];
 
             foreach (Entity e in _entities)
             {
                 //Call the Entity's Draw events
                 e.Draw();
-                //Position each Entity's icon in the display
-                if (e.X >= 0 && e.X < _sizeX
-                    && e.Y >= 0 && e.Y < _sizeY)
+                //Position the Entity's icon in the display
+                int x = (int)e.X;
+                int y = (int)e.Y;
+                if (x >= 0 && x < _sizeX
+                    && y >= 0 && y < _sizeY)
                 {
-                    display[e.X, e.Y] = e.Icon;
+                    display[x, y] = e.Icon;
                 }
             }
 
@@ -87,28 +118,49 @@ namespace GameFramework
             }
         }
 
-        //Add an Entity to the Scene
+        //Add an Entity to the Scene and set the Scene as the Entity's Scene
         public void AddEntity(Entity entity)
         {
+            //Add the Entity to the Scene
             _entities.Add(entity);
+            //Set this Scene as the Entity's Scene
             entity.CurrentScene = this;
         }
 
-        //Remove an Entity from the Scene
+        //Remove an Entity from the Scene and nullify the Entity's Scene
         public void RemoveEntity(Entity entity)
         {
+            //Remove the Entity from the Scene
             _entities.Remove(entity);
+            //Nullify the Entity's Scene
             entity.CurrentScene = null;
         }
 
-        //Clear the Scene of Entities
+        //Clear the Scene of Entities and nullify their Scenes
         public void ClearEntities()
         {
+            //Nullify each Entity's Scene
             foreach (Entity e in _entities)
             {
                 e.CurrentScene = null;
             }
+            //Clear the Entity List
             _entities.Clear();
+        }
+
+        //Returns whether there is a solid Entity at the point
+        public bool GetCollision(float x, float y)
+        {
+            //Ensure the point is within the Scene
+            if (x >= 0 && y >= 0 && x < _sizeX && y < _sizeY)
+            {
+                return _collision[(int)x, (int)y];
+            }
+            //A point outside the Scene is not a collision
+            else
+            {
+                return false;
+            }
         }
     }
 }

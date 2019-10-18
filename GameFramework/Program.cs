@@ -10,6 +10,7 @@ namespace GameFramework
     {
         static void Main(string[] args)
         {
+            //Create a new Game and Run it
             Game game = new Game();
             game.Run();
         }
