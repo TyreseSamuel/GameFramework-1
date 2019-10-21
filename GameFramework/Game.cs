@@ -16,41 +16,106 @@ namespace GameFramework
         //Creates a Game and new Scene instance as its active Scene
         public Game()
         {
-            _currentScene = new Scene();
+            
         }
 
         //The Scene we are currently running
         public static Scene CurrentScene
         {
+            set
+            {
+                _currentScene = value;
+                _currentScene.Start();
+            }
             get
             {
                 return _currentScene;
             }
         }
 
-        public void Run()
+        private void Init()
         {
-            //Add Walls to the Scene
-            _currentScene.AddEntity(new Wall(0, 0));
-            _currentScene.AddEntity(new Wall(1, 0));
-            _currentScene.AddEntity(new Wall(2, 2));
-            _currentScene.AddEntity(new Wall(3, 0));
-            _currentScene.AddEntity(new Wall(4, 0));
-            _currentScene.AddEntity(new Wall(5, 0));
-            //Create a Player and position it
+            Room startingRoom = new Room(8, 6);
+            Room otherRoom = new Room(12, 6);
+            
+            Enemy enemy = new Enemy();
+            void OtherRoomStart()
+            {
+                enemy.X = 4;
+                enemy.Y = 4;
+            }
+
+            otherRoom.OnStart += OtherRoomStart;
+
+            startingRoom.North = otherRoom;
+            //Add Walls to the startingRoom
+            startingRoom.AddEntity(new Wall(2, 2));
+            //north walls
+            for (int i = 0; i < startingRoom.SizeX; i++)
+            {
+                if (i != 2)
+                {
+                    startingRoom.AddEntity(new Wall(i, 0));
+                }
+            }
+            //south walls
+            for (int i = 0; i < startingRoom.SizeX; i++)
+            {
+                startingRoom.AddEntity(new Wall(i, startingRoom.SizeY-1));
+            }
+            //east walls
+            for (int i = 1; i < startingRoom.SizeY-1; i++)
+            {
+                startingRoom.AddEntity(new Wall(startingRoom.SizeX-1, i));
+            }
+            //west walls
+            for (int i = 1; i < startingRoom.SizeY-1; i++)
+            {
+                startingRoom.AddEntity(new Wall(0, i));
+            }
+            //Add Walls to the otherRoom
+            //north walls
+            for (int i = 0; i < otherRoom.SizeX; i++)
+            {
+                otherRoom.AddEntity(new Wall(i, 0));
+            }
+            //south walls
+            for (int i = 0; i < otherRoom.SizeX; i++)
+            {
+                if (i != 2)
+                {
+                    otherRoom.AddEntity(new Wall(i, otherRoom.SizeY-1));
+                }
+            }
+            //east walls
+            for (int i = 1; i < otherRoom.SizeY - 1; i++)
+            {
+                otherRoom.AddEntity(new Wall(otherRoom.SizeX-1, i));
+            }
+            //west walls
+            for (int i = 1; i < otherRoom.SizeY - 1; i++)
+            {
+                otherRoom.AddEntity(new Wall(0, i));
+            }
+
+            //Create a Player, position it, and add it to startingRoom
             Player player = new Player();
             player.X = 4;
             player.Y = 3;
-            //Create an enemy and position it
-            Entity enemy = new Entity('e');
-            enemy.X = 4;
-            enemy.Y = 5;
-            //Add the enemy and player to the Scene
-            _currentScene.AddEntity(enemy);
-            _currentScene.AddEntity(player);
+            startingRoom.AddEntity(player);
+            //Add enemy to otherRoom
+            otherRoom.AddEntity(enemy);
 
-            //Start the first Scene
-            _currentScene.Start();
+            CurrentScene = startingRoom;
+        }
+
+        public void Run()
+        {
+            //Bind Esc to exit the game
+            PlayerInput.AddKeyEvent(Quit, ConsoleKey.Escape);
+
+            Init();
+            
             //Update, draw, and get input until the game is over
             while (!Gameover)
             {
@@ -58,6 +123,11 @@ namespace GameFramework
                 _currentScene.Draw();
                 PlayerInput.ReadKey();
             }
+        }
+
+        public void Quit()
+        {
+            Gameover = true;
         }
     }
 }

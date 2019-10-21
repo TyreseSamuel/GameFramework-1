@@ -14,9 +14,16 @@ namespace GameFramework
         private int _sizeX, _sizeY;
         //The grid for collision detection
         private bool[,] _collision;
+        //The grid for Entity tracking
+        private List<Entity>[,] _tracking;
+
+        //Events that are called when the Scene is Started, Updated, and Drawn
+        public Event OnStart;
+        public Event OnUpdate;
+        public Event OnDraw;
 
         //Creates a new Scene with a size of 24x6
-        public Scene() : this(24, 6)
+        public Scene() : this(6, 6)
         {
 
         }
@@ -30,6 +37,8 @@ namespace GameFramework
             _sizeY = sizeY;
             //Create the collision grid
             _collision = new bool[_sizeX, _sizeY];
+            //Create the tracking grid
+            _tracking = new List<Entity>[_sizeX, _sizeY];
         }
 
         //The horizontal size of the Scene
@@ -53,6 +62,8 @@ namespace GameFramework
         //Called in Game when the Scene should begin
         public void Start()
         {
+            OnStart?.Invoke();
+
             foreach (Entity e in _entities)
             {
                 e.Start();
@@ -62,8 +73,18 @@ namespace GameFramework
         //Called in Game every step to update each Entity in the Scene
         public void Update()
         {
+            OnUpdate?.Invoke();
+
             //Clear the collision grid
             _collision = new bool[_sizeX, _sizeY];
+            //Clear the tracking grid
+            for (int y = 0; y < _sizeY; y++)
+            {
+                for (int x = 0; x < _sizeX; x++)
+                {
+                    _tracking[x, y] = new List<Entity>();
+                }
+            }
 
             foreach (Entity e in _entities)
             {
@@ -72,9 +93,12 @@ namespace GameFramework
                 //Set the Entity's collision in the collision grid
                 int x = (int)e.X;
                 int y = (int)e.Y;
+                //Only update if the Entity is within bounds
                 if (x >= 0 && x < _sizeX
                     && y >= 0 && y < _sizeY)
                 {
+                    //Add the Entity to the tracking grid
+                    _tracking[x, y].Add(e);
                     //Only update this point in the grid if the Entity is solid
                     if (!_collision[x, y])
                     {
@@ -87,6 +111,8 @@ namespace GameFramework
         //Called in Game every step to render each Entity in the Scene
         public void Draw()
         {
+            OnDraw?.Invoke();
+
             //Clear the screen
             Console.Clear();
 
@@ -160,6 +186,21 @@ namespace GameFramework
             else
             {
                 return false;
+            }
+        }
+
+        //Returns the List of Entities at a specified point
+        public List<Entity> GetEntities(float x, float y)
+        {
+            //Ensure the point is within the Scene
+            if (x >= 0 && y >= 0 && x < _sizeX && y < _sizeY)
+            {
+                return _tracking[(int)x, (int)y];
+            }
+            //A point outside the Scene is not a collision
+            else
+            {
+                return new List<Entity>();
             }
         }
     }
