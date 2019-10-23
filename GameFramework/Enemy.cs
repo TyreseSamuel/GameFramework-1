@@ -10,14 +10,24 @@ namespace GameFramework
     {
         private Direction _facing;
 
-        //Creates a new Enemy represented by the 'e' symbol
-        public Enemy() : this('e')
+        //Creates a new Enemy represented by the 'e' symbol and rat image
+        public Enemy() : this('e', "images/tile210.png")
+        {
+
+        }
+
+        public Enemy(char icon) : this(icon, "images/tile210.png")
+        {
+
+        }
+
+        public Enemy(string imageName) : this('e', imageName)
         {
 
         }
 
         //Creates a new Enemy with the specified symbol
-        public Enemy(char icon) : base(icon)
+        public Enemy(char icon, string imageName) : base(icon, imageName)
         {
             //Start the Enemy facing North
             _facing = Direction.North;
