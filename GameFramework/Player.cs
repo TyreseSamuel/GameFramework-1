@@ -24,7 +24,7 @@ namespace GameFramework
             PlayerInput.AddKeyEvent(MoveDown, ConsoleKey.DownArrow);
         }
 
-        //Move one space to the up
+        //Move one space up
         private void MoveUp()
         {
             if (Y - 1 < 0)
@@ -42,7 +42,7 @@ namespace GameFramework
             }
         }
 
-        //Move one space to the down
+        //Move one space down
         private void MoveDown()
         {
             if (Y + 1 >= CurrentScene.SizeY)

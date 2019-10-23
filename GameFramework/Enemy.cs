@@ -10,23 +10,29 @@ namespace GameFramework
     {
         private Direction _facing;
 
+        //Creates a new Enemy represented by the 'e' symbol
         public Enemy() : this('e')
         {
 
         }
 
+        //Creates a new Enemy with the specified symbol
         public Enemy(char icon) : base(icon)
         {
+            //Start the Enemy facing North
             _facing = Direction.North;
+            //Add Move and TouchPlayer to the OnUpdate Event
             OnUpdate += Move;
             OnUpdate += TouchPlayer;
         }
 
+        //Check to see if the Enemy has touched a Player and remove itself if so
         private void TouchPlayer()
         {
-            List<Entity> touched;
-            touched = CurrentScene.GetEntities(X, Y);
+            //Get the List of Entities in our space
+            List<Entity> touched = CurrentScene.GetEntities(X, Y);
 
+            //Check if any of them are Players
             bool hit = false;
             foreach (Entity e in touched)
             {
@@ -37,12 +43,14 @@ namespace GameFramework
                 }
             }
 
+            //If we hit a Player, remove this Enemy from the Scene
             if (hit)
             {
                 CurrentScene.RemoveEntity(this);
             }
         }
 
+        //Move in the direction the Enemy is facing
         private void Move()
         {
             switch (_facing)
@@ -62,48 +70,60 @@ namespace GameFramework
             }
         }
 
+        //Move one space up
         private void MoveUp()
         {
+            //Move up if the space is clear
             if (!CurrentScene.GetCollision(X, Y - 1))
             {
                 Y--;
             }
+            //Otherwise change direction
             else
             {
                 _facing++;
             }
         }
 
+        //Move one space down
         private void MoveDown()
         {
+            //Move down if the space is clear
             if (!CurrentScene.GetCollision(X, Y + 1))
             {
                 Y++;
             }
+            //Otherwise change direction
             else
             {
                 _facing++;
             }
         }
 
+        //Move one space left
         private void MoveLeft()
         {
+            //Move left if the space is clear
             if (!CurrentScene.GetCollision(X - 1, Y))
             {
                 X--;
             }
+            //Otherwise change direction
             else
             {
                 _facing = Direction.North;
             }
         }
 
+        //Move one space right
         private void MoveRight()
         {
+            //Move right if the space is clear
             if (!CurrentScene.GetCollision(X + 1, Y))
             {
                 X++;
             }
+            //Otherwise change direction
             else
             {
                 _facing++;

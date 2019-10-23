@@ -10,6 +10,8 @@ namespace GameFramework
     {
         //The list of all the Entities in the Scene
         private List<Entity> _entities = new List<Entity>();
+        //The list of Entities to remove from the Scene
+        private List<Entity> _removals = new List<Entity>();
         //The size of the Scene
         private int _sizeX, _sizeY;
         //The grid for collision detection
@@ -66,6 +68,7 @@ namespace GameFramework
 
             foreach (Entity e in _entities)
             {
+                //Call the Entity's Start events
                 e.Start();
             }
         }
@@ -86,10 +89,17 @@ namespace GameFramework
                 }
             }
 
+            //Remove all the Entities readied for removal
+            foreach (Entity e in _removals)
+            {
+                //Remove e from _entities
+                _entities.Remove(e);
+            }
+            //Reset the removal list
+            _removals.Clear();
+
             foreach (Entity e in _entities)
             {
-                //Call the Entity's Update events
-                e.Update();
                 //Set the Entity's collision in the collision grid
                 int x = (int)e.X;
                 int y = (int)e.Y;
@@ -106,6 +116,12 @@ namespace GameFramework
                     }
                 }
             }
+
+            foreach (Entity e in _entities)
+            {
+                //Call the Entity's Update events
+                e.Update();
+            }
         }
 
         //Called in Game every step to render each Entity in the Scene
@@ -121,8 +137,6 @@ namespace GameFramework
 
             foreach (Entity e in _entities)
             {
-                //Call the Entity's Draw events
-                e.Draw();
                 //Position the Entity's icon in the display
                 int x = (int)e.X;
                 int y = (int)e.Y;
@@ -142,6 +156,12 @@ namespace GameFramework
                 }
                 Console.WriteLine();
             }
+
+            foreach (Entity e in _entities)
+            {
+                //Call the Entity's Draw events
+                e.Draw();
+            }
         }
 
         //Add an Entity to the Scene and set the Scene as the Entity's Scene
@@ -156,8 +176,8 @@ namespace GameFramework
         //Remove an Entity from the Scene and nullify the Entity's Scene
         public void RemoveEntity(Entity entity)
         {
-            //Remove the Entity from the Scene
-            _entities.Remove(entity);
+            //Ready the Entity for removal
+            _removals.Add(entity);
             //Nullify the Entity's Scene
             entity.CurrentScene = null;
         }
@@ -168,10 +188,8 @@ namespace GameFramework
             //Nullify each Entity's Scene
             foreach (Entity e in _entities)
             {
-                e.CurrentScene = null;
+                RemoveEntity(e);
             }
-            //Clear the Entity List
-            _entities.Clear();
         }
 
         //Returns whether there is a solid Entity at the point
