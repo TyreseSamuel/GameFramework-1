@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Raylib;
+using RL = Raylib.Raylib;
 
 namespace GameFramework
 {
@@ -16,7 +18,8 @@ namespace GameFramework
         //Creates a Game and new Scene instance as its active Scene
         public Game()
         {
-            
+            RL.InitWindow(640, 480, "Hello World");
+            RL.SetTargetFPS(15);
         }
 
         //The Scene we are currently running
@@ -38,13 +41,22 @@ namespace GameFramework
             Room startingRoom = new Room(8, 6);
             Room otherRoom = new Room(12, 6);
             
+            //Create a Player, position it, and add it to startingRoom
+            Player player = new Player("aie-logo-dark.jpg");
+            player.X = 4;
+            player.Y = 3;
+            startingRoom.AddEntity(player);
+
+            //Create an Enemy and add it to otherRoom
             Enemy enemy = new Enemy();
+            otherRoom.AddEntity(enemy);
+
+            //Reset the Enemy's position when we enter otherRoom
             void OtherRoomStart()
             {
                 enemy.X = 4;
                 enemy.Y = 4;
             }
-
             otherRoom.OnStart += OtherRoomStart;
 
             startingRoom.North = otherRoom;
@@ -98,31 +110,29 @@ namespace GameFramework
                 otherRoom.AddEntity(new Wall(0, i));
             }
 
-            //Create a Player, position it, and add it to startingRoom
-            Player player = new Player();
-            player.X = 4;
-            player.Y = 3;
-            startingRoom.AddEntity(player);
-            //Add enemy to otherRoom
-            otherRoom.AddEntity(enemy);
-
             CurrentScene = startingRoom;
         }
 
         public void Run()
         {
-            //Bind Esc to exit the game
-            PlayerInput.AddKeyEvent(Quit, ConsoleKey.Escape);
+            //Bind Esc to exit the game (no longer needed)
+            //PlayerInput.AddKeyEvent(Quit, ConsoleKey.Escape);
 
             Init();
             
             //Update, draw, and get input until the game is over
-            while (!Gameover)
+            while (!Gameover && !RL.WindowShouldClose())
             {
                 _currentScene.Update();
+
+                RL.BeginDrawing();
                 _currentScene.Draw();
+                RL.EndDrawing();
+
                 PlayerInput.ReadKey();
             }
+
+            RL.CloseWindow();
         }
 
         public void Quit()

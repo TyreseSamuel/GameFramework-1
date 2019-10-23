@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Raylib;
+using RL = Raylib.Raylib;
 
 namespace GameFramework
 {
@@ -20,6 +22,8 @@ namespace GameFramework
 
         //The character representing the Entity on the screen
         public char Icon { get; set; } = ' ';
+        //The image representing the Entity on the screen
+        public Texture2D Sprite { get; set; }
         //Whether or not this Entity returns a collision
         public bool Solid { get; set; } = false;
         //The Entity's location on the X axis
@@ -59,6 +63,12 @@ namespace GameFramework
         public Entity(char icon)
         {
             Icon = icon;
+        }
+
+        //Creates an Entity with the specified icon and image
+        public Entity(char icon, string imageName) : this(icon)
+        {
+            Sprite = RL.LoadTexture(imageName);
         }
 
         //Call the Entity's OnStart event

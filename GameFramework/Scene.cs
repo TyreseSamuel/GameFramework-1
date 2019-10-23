@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Raylib;
+using RL = Raylib.Raylib;
 
 namespace GameFramework
 {
@@ -131,6 +133,7 @@ namespace GameFramework
 
             //Clear the screen
             Console.Clear();
+            RL.ClearBackground(Color.DARKBROWN);
 
             //Create the display grid
             char[,] display = new char[_sizeX, _sizeY];
@@ -147,12 +150,16 @@ namespace GameFramework
                 }
             }
 
-            //Render the display buffer to the screen
+            //Render the display grid to the screen
             for (int y = 0; y < _sizeY; y++)
             {
                 for (int x = 0; x < _sizeX; x++)
                 {
                     Console.Write(display[x, y]);
+                    foreach (Entity e in _tracking[x, y])
+                    {
+                        RL.DrawTexture(e.Sprite, x * 16, y * 16, Color.WHITE);
+                    }
                 }
                 Console.WriteLine();
             }

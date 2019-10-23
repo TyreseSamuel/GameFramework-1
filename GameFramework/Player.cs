@@ -14,14 +14,23 @@ namespace GameFramework
 
         }
 
+        public Player(string imageName) : base('@', imageName)
+        {
+            //Bind movement methods to the arrow keys
+            PlayerInput.AddKeyEvent(MoveLeft, 97); //A
+            PlayerInput.AddKeyEvent(MoveRight, 100); //D
+            PlayerInput.AddKeyEvent(MoveUp, 119); //W
+            PlayerInput.AddKeyEvent(MoveDown, 115); //S
+        }
+
         //Creates a new Player with the specified symbol and adds movement key events
         public Player(char icon) : base(icon)
         {
             //Bind movement methods to the arrow keys
-            PlayerInput.AddKeyEvent(MoveLeft, ConsoleKey.LeftArrow);
-            PlayerInput.AddKeyEvent(MoveRight, ConsoleKey.RightArrow);
-            PlayerInput.AddKeyEvent(MoveUp, ConsoleKey.UpArrow);
-            PlayerInput.AddKeyEvent(MoveDown, ConsoleKey.DownArrow);
+            PlayerInput.AddKeyEvent(MoveLeft, 97); //A
+            PlayerInput.AddKeyEvent(MoveRight, 100); //D
+            PlayerInput.AddKeyEvent(MoveUp, 119); //W
+            PlayerInput.AddKeyEvent(MoveDown, 115); //S
         }
 
         //Move one space up
