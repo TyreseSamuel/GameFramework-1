@@ -8,8 +8,10 @@ namespace GameFramework
 {
     class Player : Entity
     {
+        private PlayerInput _input = new PlayerInput();
+
         //Creates a new Player represented by the '@' symbol and adds movement key events
-        public Player() : this('@')
+        public Player() : this('@', "images/tile196.png")
         {
 
         }
@@ -28,10 +30,12 @@ namespace GameFramework
         public Player(char icon, string imageName) : base(icon, imageName)
         {
             //Bind movement methods to the arrow keys
-            PlayerInput.AddKeyEvent(MoveLeft, 97); //A
-            PlayerInput.AddKeyEvent(MoveRight, 100); //D
-            PlayerInput.AddKeyEvent(MoveUp, 119); //W
-            PlayerInput.AddKeyEvent(MoveDown, 115); //S
+            _input.AddKeyEvent(MoveLeft, 97); //A
+            _input.AddKeyEvent(MoveRight, 100); //D
+            _input.AddKeyEvent(MoveUp, 119); //W
+            _input.AddKeyEvent(MoveDown, 115); //S
+            //Add ReadKey to this Entity's OnUpdate
+            OnUpdate += _input.ReadKey;
         }
 
         //Move one space up

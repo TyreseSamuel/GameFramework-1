@@ -18,12 +18,22 @@ namespace GameFramework
         public static bool Gameover = false;
         //The Scene we are currently running
         private static Scene _currentScene;
+        //The Scene we are about to go to
+        private static Scene _nextScene;
+        //The camera for the 3D view
+        private Camera3D _camera;
 
         //Creates a Game and new Scene instance as its active Scene
         public Game()
         {
             RL.InitWindow(640, 480, "Hello World");
             RL.SetTargetFPS(15);
+
+            //Raylib.Vector3 cameraPosition = new Raylib.Vector3(-10, -10, -10);
+            //Raylib.Vector3 cameraTarget = new Raylib.Vector3(0, 0, 0);
+            //Raylib.Vector3 cameraUp = new Raylib.Vector3(0, 0, 1);
+
+            //_camera = new Camera3D(cameraPosition, cameraTarget, cameraUp);
         }
 
         //The Scene we are currently running
@@ -31,8 +41,7 @@ namespace GameFramework
         {
             set
             {
-                _currentScene = value;
-                _currentScene.Start();
+                _nextScene = value;
             }
             get
             {
@@ -50,13 +59,30 @@ namespace GameFramework
             //Update, draw, and get input until the game is over
             while (!Gameover && !RL.WindowShouldClose())
             {
+                //Start the Scene if needed
+                if (_currentScene != _nextScene)
+                {
+                    _currentScene = _nextScene;
+                    _currentScene.Start();
+                }
+
+                //Update the active Scene
                 _currentScene.Update();
 
-                RL.BeginDrawing();
-                _currentScene.Draw();
-                RL.EndDrawing();
+                //int mouseX = (RL.GetMouseX() - 320) / 16;
+                //int mouseY = (RL.GetMouseY() - 240) / 16;
+                //Raylib.Vector3 cameraPosition = new Raylib.Vector3(mouseX, mouseY, -100);
+                //Raylib.Vector3 cameraTarget = new Raylib.Vector3(mouseX, mouseY, 0);
+                //Raylib.Vector3 cameraUp = new Raylib.Vector3(1, -1, 1);
 
-                PlayerInput.ReadKey();
+                //_camera = new Camera3D(cameraPosition, cameraTarget, cameraUp);
+
+                //Draw the active Scene
+                RL.BeginDrawing();
+                //RL.BeginMode3D(_camera);
+                _currentScene.Draw();
+                //RL.EndMode3D();
+                RL.EndDrawing();
             }
 
             RL.CloseWindow();
@@ -74,71 +100,6 @@ namespace GameFramework
 
             startingRoom.North = otherRoom;
 
-            //Create a Player, position it, and add it to startingRoom
-            //Player player = new Player("images/tile196.png");
-            //player.X = 4;
-            //player.Y = 3;
-            //startingRoom.AddEntity(player);
-            /*
-            //Reset the Enemy's position when we enter otherRoom
-            void OtherRoomStart()
-            {
-                enemy.X = 4;
-                enemy.Y = 4;
-            }
-            enemy.OnStart += OtherRoomStart;
-
-            startingRoom.North = otherRoom;
-            //Add Walls to the startingRoom
-            startingRoom.AddEntity(new Wall(2, 2));
-            //north walls
-            for (int i = 0; i < startingRoom.SizeX; i++)
-            {
-                if (i != 2)
-                {
-                    startingRoom.AddEntity(new Wall(i, 0));
-                }
-            }
-            //south walls
-            for (int i = 0; i < startingRoom.SizeX; i++)
-            {
-                startingRoom.AddEntity(new Wall(i, startingRoom.SizeY - 1));
-            }
-            //east walls
-            for (int i = 1; i < startingRoom.SizeY - 1; i++)
-            {
-                startingRoom.AddEntity(new Wall(startingRoom.SizeX - 1, i));
-            }
-            //west walls
-            for (int i = 1; i < startingRoom.SizeY - 1; i++)
-            {
-                startingRoom.AddEntity(new Wall(0, i));
-            }
-            //Add Walls to the otherRoom
-            //north walls
-            for (int i = 0; i < otherRoom.SizeX; i++)
-            {
-                otherRoom.AddEntity(new Wall(i, 0));
-            }
-            //south walls
-            for (int i = 0; i < otherRoom.SizeX; i++)
-            {
-                if (i != 2)
-                {
-                    otherRoom.AddEntity(new Wall(i, otherRoom.SizeY - 1));
-                }
-            }
-            //east walls
-            for (int i = 1; i < otherRoom.SizeY - 1; i++)
-            {
-                otherRoom.AddEntity(new Wall(otherRoom.SizeX - 1, i));
-            }
-            //west walls
-            for (int i = 1; i < otherRoom.SizeY - 1; i++)
-            {
-                otherRoom.AddEntity(new Wall(0, i));
-            }
-            */
             CurrentScene = startingRoom;
         }
         
