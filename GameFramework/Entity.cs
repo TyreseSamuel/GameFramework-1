@@ -19,6 +19,8 @@ namespace GameFramework
 
         //The location of the Entity
         private Vector2 _location = new Vector2();
+        //The velocity of the Entity
+        private Vector2 _velocity = new Vector2();
 
         //The character representing the Entity on the screen
         public char Icon { get; set; } = ' ';
@@ -48,6 +50,30 @@ namespace GameFramework
             set
             {
                 _location.y = value;
+            }
+        }
+        //The Entity's velocity on the X axis
+        public float XVelocity
+        {
+            get
+            {
+                return _velocity.x;
+            }
+            set
+            {
+                _velocity.x = value;
+            }
+        }
+        //The Entity's velocity on the Y axis
+        public float YVelocity
+        {
+            get
+            {
+                return _velocity.y;
+            }
+            set
+            {
+                _velocity.y = value;
             }
         }
         //The Scene the Entity is currently in
@@ -80,6 +106,7 @@ namespace GameFramework
         //Call the Entity's OnUpdate event
         public void Update()
         {
+            _location += _velocity;
             OnUpdate?.Invoke();
         }
 

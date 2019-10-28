@@ -13,11 +13,9 @@ namespace GameFramework
         public float z;
 
         //Creates a Vector3 with x, y, and z at 0
-        public Vector3()
+        public Vector3() : this(0f, 0f, 0f)
         {
-            x = 0;
-            y = 0;
-            z = 0;
+
         }
 
         //Creates a Vector3 with x, y, and z at the specified values
@@ -26,6 +24,42 @@ namespace GameFramework
             this.x = x;
             this.y = y;
             this.z = z;
+        }
+
+        //Returns the magnitude of the Vector3
+        public float Magnitude()
+        {
+            return (float)Math.Sqrt(x * x + y * y + z * z);
+        }
+
+        //Returns the square of the magnitude of the Vector3
+        public float MagnitudeSqr()
+        {
+            return (x * x + y * y + z * z);
+        }
+
+        //Returns the distance between this Vector3 and another
+        public float Distance(Vector3 other)
+        {
+            float diffX = x - other.x;
+            float diffY = y - other.y;
+            float diffZ = z - other.z;
+            return (float)Math.Sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);
+        }
+
+        //Normalizes this Vector3
+        public void Normalize()
+        {
+            float m = Magnitude();
+            x /= m;
+            y /= m;
+            z /= m;
+        }
+
+        //Returns a normalized Vector3 without modifying this one
+        public Vector3 GetNormalized()
+        {
+            return (this / Magnitude());
         }
 
         // Vector3 + Vector3

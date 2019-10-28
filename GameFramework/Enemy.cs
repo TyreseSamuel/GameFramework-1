@@ -9,6 +9,7 @@ namespace GameFramework
     class Enemy : Entity
     {
         private Direction _facing;
+        public float Speed { get; set; } = 0.25f;
 
         //Creates a new Enemy represented by the 'e' symbol and rat image
         public Enemy() : this('e', "images/tile210.png")
@@ -84,13 +85,14 @@ namespace GameFramework
         private void MoveUp()
         {
             //Move up if the space is clear
-            if (!CurrentScene.GetCollision(X, Y - 1))
+            if (!CurrentScene.GetCollision(X, Y - Speed))
             {
-                Y--;
+                YVelocity = -Speed;
             }
             //Otherwise change direction
             else
             {
+                YVelocity = 0f;
                 _facing++;
             }
         }
@@ -101,11 +103,12 @@ namespace GameFramework
             //Move down if the space is clear
             if (!CurrentScene.GetCollision(X, Y + 1))
             {
-                Y++;
+                YVelocity = Speed;
             }
-            //Otherwise change direction
+            //Otherwise stop and change direction
             else
             {
+                YVelocity = 0f;
                 _facing++;
             }
         }
@@ -114,13 +117,14 @@ namespace GameFramework
         private void MoveLeft()
         {
             //Move left if the space is clear
-            if (!CurrentScene.GetCollision(X - 1, Y))
+            if (!CurrentScene.GetCollision(X - Speed, Y))
             {
-                X--;
+                XVelocity = -Speed;
             }
-            //Otherwise change direction
+            //Otherwise stop and change direction
             else
             {
+                XVelocity = 0f;
                 _facing = Direction.North;
             }
         }
@@ -131,11 +135,12 @@ namespace GameFramework
             //Move right if the space is clear
             if (!CurrentScene.GetCollision(X + 1, Y))
             {
-                X++;
+                XVelocity = Speed;
             }
-            //Otherwise change direction
+            //Otherwise stop and change direction
             else
             {
+                XVelocity = 0f;
                 _facing++;
             }
         }

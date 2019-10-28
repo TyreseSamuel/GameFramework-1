@@ -12,10 +12,9 @@ namespace GameFramework
         public float y;
 
         //Creates a Vector2 with x and y at 0
-        public Vector2()
+        public Vector2() : this(0f, 0f)
         {
-            x = 0;
-            y = 0;
+
         }
 
         //Creates a Vector2 with x and y at the specified values
@@ -23,6 +22,40 @@ namespace GameFramework
         {
             this.x = x;
             this.y = y;
+        }
+
+        //Returns the magnitude of the Vector2
+        public float Magnitude()
+        {
+            return (float)Math.Sqrt(x * x + y * y);
+        }
+
+        //Returns the square of the magnitude of the Vector2
+        public float MagnitudeSqr()
+        {
+            return (x * x + y * y);
+        }
+
+        //Returns the distance between this Vector2 and another
+        public float Distance(Vector2 other)
+        {
+            float diffX = x - other.x;
+            float diffY = y - other.y;
+            return (float)Math.Sqrt(diffX * diffX + diffY * diffY);
+        }
+
+        //Normalizes this Vector2
+        public void Normalize()
+        {
+            float m = Magnitude();
+            x /= m;
+            y /= m;
+        }
+
+        //Returns a normalized Vector2 without modifying this one
+        public Vector2 GetNormalized()
+        {
+            return (this / Magnitude());
         }
 
         // Vector2 + Vector2

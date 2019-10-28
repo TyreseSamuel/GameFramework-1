@@ -12,6 +12,8 @@ namespace GameFramework
     {
         //The list of all the Entities in the Scene
         private List<Entity> _entities = new List<Entity>();
+        //The list of Entities to add to the Scene
+        private List<Entity> _additions = new List<Entity>();
         //The list of Entities to remove from the Scene
         private List<Entity> _removals = new List<Entity>();
         //The size of the Scene
@@ -91,6 +93,14 @@ namespace GameFramework
                 }
             }
 
+            //Add all the Entities readied for addition
+            foreach (Entity e in _additions)
+            {
+                //Add e to _entities
+                _entities.Add(e);
+            }
+            _additions.Clear();
+
             //Remove all the Entities readied for removal
             foreach (Entity e in _removals)
             {
@@ -158,7 +168,7 @@ namespace GameFramework
                     Console.Write(display[x, y]);
                     foreach (Entity e in _tracking[x, y])
                     {
-                        RL.DrawTexture(e.Sprite, x * Game.SizeX, y * Game.SizeY, Color.WHITE);
+                        RL.DrawTexture(e.Sprite, (int)(e.X * Game.SizeX), (int)(e.Y * Game.SizeY), Color.WHITE);
                     }
                 }
                 Console.WriteLine();
@@ -174,8 +184,8 @@ namespace GameFramework
         //Add an Entity to the Scene and set the Scene as the Entity's Scene
         public void AddEntity(Entity entity)
         {
-            //Add the Entity to the Scene
-            _entities.Add(entity);
+            //Ready the Entity for addition
+            _additions.Add(entity);
             //Set this Scene as the Entity's Scene
             entity.CurrentScene = this;
         }

@@ -49,6 +49,7 @@ namespace GameFramework
             }
         }
 
+        //Run the game loop
         public void Run()
         {
             //Bind Esc to exit the game (no longer needed)
@@ -88,11 +89,13 @@ namespace GameFramework
             RL.CloseWindow();
         }
         
+        //Flags the game as ready to end
         public void Quit()
         {
             Gameover = true;
         }
 
+        //Sets up the initial game state
         private void Init()
         {
             Room startingRoom = LoadRoom("rooms/starting.txt");
@@ -103,6 +106,7 @@ namespace GameFramework
             CurrentScene = startingRoom;
         }
         
+        //Loads and returns a room from a file
         private Room LoadRoom(string path)
         {
             StreamReader reader = new StreamReader(path);
