@@ -29,11 +29,11 @@ namespace GameFramework
             RL.InitWindow(640, 480, "Hello World");
             RL.SetTargetFPS(15);
 
-            //Raylib.Vector3 cameraPosition = new Raylib.Vector3(-10, -10, -10);
-            //Raylib.Vector3 cameraTarget = new Raylib.Vector3(0, 0, 0);
-            //Raylib.Vector3 cameraUp = new Raylib.Vector3(0, 0, 1);
+            Raylib.Vector3 cameraPosition = new Raylib.Vector3(64, 0, -100);
+            Raylib.Vector3 cameraTarget = new Raylib.Vector3(64, 0, 0);
+            Raylib.Vector3 cameraUp = new Raylib.Vector3(0.0f, 0.0f, 0.0f);
 
-            //_camera = new Camera3D(cameraPosition, cameraTarget, cameraUp);
+            _camera = new Camera3D(cameraPosition, cameraTarget, cameraUp);
         }
 
         //The Scene we are currently running

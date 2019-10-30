@@ -24,6 +24,11 @@ namespace GameFramework
             this.y = y;
         }
 
+        public override string ToString()
+        {
+            return "{" + x + ", " + y + "}";
+        }
+
         //Returns the magnitude of the Vector2
         public float Magnitude()
         {
@@ -58,37 +63,61 @@ namespace GameFramework
             return (this / Magnitude());
         }
 
-        // Vector2 + Vector2
+        //Returns the dot product of this Vector2 and another
+        public float Dot(Vector2 other)
+        {
+            return x * other.x + y * other.y;
+        }
+
+        public Vector2 GetPerpendicularRH()
+        {
+            return new Vector2(-y, x);
+        }
+
+        public Vector2 GetPerpendicularLH()
+        {
+            return new Vector2(y, -x);
+        }
+
+        public float GetAngle(Vector2 other)
+        {
+            Vector2 a = GetNormalized();
+            Vector2 b = other.GetNormalized();
+
+            return (float)Math.Acos(a.Dot(b));
+        }
+
+        //Vector2 + Vector2
         public static Vector2 operator +(Vector2 lhs, Vector2 rhs)
         {
             return new Vector2(lhs.x + rhs.x, lhs.y + rhs.y);
         }
 
-        // Vector2 - Vector2
+        //Vector2 - Vector2
         public static Vector2 operator -(Vector2 lhs, Vector2 rhs)
         {
             return new Vector2(lhs.x - rhs.x, lhs.y - rhs.y);
         }
 
-        // Vector2 * float
+        //Vector2 * float
         public static Vector2 operator *(Vector2 lhs, float rhs)
         {
             return new Vector2(lhs.x * rhs, lhs.y * rhs);
         }
 
-        // float * Vector2
+        //float * Vector2
         public static Vector2 operator *(float lhs, Vector2 rhs)
         {
             return new Vector2(lhs * rhs.x, lhs * rhs.y);
         }
 
-        // Vector2 / float
+        //Vector2 / float
         public static Vector2 operator /(Vector2 lhs, float rhs)
         {
             return new Vector2(lhs.x / rhs, lhs.y / rhs);
         }
 
-        // float / Vector2
+        //float / Vector2
         public static Vector2 operator /(float lhs, Vector2 rhs)
         {
             return new Vector2(lhs / rhs.x, lhs / rhs.y);

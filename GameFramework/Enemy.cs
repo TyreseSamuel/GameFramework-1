@@ -9,7 +9,7 @@ namespace GameFramework
     class Enemy : Entity
     {
         private Direction _facing;
-        public float Speed { get; set; } = 0.25f;
+        public float Speed { get; set; } = 0.05f;
 
         //Creates a new Enemy represented by the 'e' symbol and rat image
         public Enemy() : this('e', "images/tile210.png")

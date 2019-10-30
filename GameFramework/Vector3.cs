@@ -26,6 +26,11 @@ namespace GameFramework
             this.z = z;
         }
 
+        public override string ToString()
+        {
+            return "{" + x + ", " + y + ", " + z + "}";
+        }
+
         //Returns the magnitude of the Vector3
         public float Magnitude()
         {
@@ -62,37 +67,60 @@ namespace GameFramework
             return (this / Magnitude());
         }
 
-        // Vector3 + Vector3
+        //Returns the dot product of this Vector3 and another
+        public float Dot(Vector3 other)
+        {
+            return x * other.x + y * other.y + z * other.z;
+        }
+
+        //Returns the cross product of this Vector2 and another
+        public Vector3 Cross(Vector3 other)
+        {
+            return new Vector3(
+                y * other.z - z * other.y,
+                z * other.x - x * other.z,
+                x * other.y - y * other.x);
+        }
+
+        public float GetAngle(Vector3 other)
+        {
+            Vector3 a = GetNormalized();
+            Vector3 b = other.GetNormalized();
+
+            return (float)Math.Acos(a.Dot(b));
+        }
+
+        //Vector3 + Vector3
         public static Vector3 operator +(Vector3 lhs, Vector3 rhs)
         {
             return new Vector3(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
         }
 
-        // Vector3 - Vector3
+        //Vector3 - Vector3
         public static Vector3 operator -(Vector3 lhs, Vector3 rhs)
         {
             return new Vector3(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
         }
 
-        // Vector3 * float
+        //Vector3 * float
         public static Vector3 operator *(Vector3 lhs, float rhs)
         {
             return new Vector3(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs);
         }
 
-        // float * Vector3
+        //float * Vector3
         public static Vector3 operator *(float lhs, Vector3 rhs)
         {
             return new Vector3(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z);
         }
 
-        // Vector3 / float
+        //Vector3 / float
         public static Vector3 operator /(Vector3 lhs, float rhs)
         {
             return new Vector3(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs);
         }
 
-        // float / Vector3
+        //float / Vector3
         public static Vector3 operator /(float lhs, Vector3 rhs)
         {
             return new Vector3(lhs / rhs.x, lhs / rhs.y, lhs / rhs.z);
