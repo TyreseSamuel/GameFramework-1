@@ -37,8 +37,10 @@ namespace GameFramework
         //Matrix2 * Matrix2
         public static Matrix2 operator *(Matrix2 lhs, Matrix2 rhs)
         {
-            return new Matrix2(lhs.m11 * rhs.m11 + lhs.m12 * rhs.m21,
+            return new Matrix2(
+                lhs.m11 * rhs.m11 + lhs.m12 * rhs.m21,
                 lhs.m11 * rhs.m12 + lhs.m12 * rhs.m22,
+
                 lhs.m21 * rhs.m11 + lhs.m22 * rhs.m21,
                 lhs.m21 * rhs.m12 + lhs.m22 * rhs.m22);
         }

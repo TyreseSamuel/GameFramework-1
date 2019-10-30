@@ -34,7 +34,7 @@ namespace GameFramework
             _facing = Direction.North;
             //Add Move and TouchPlayer to the OnUpdate Event
             OnUpdate += Move;
-            OnUpdate += TouchPlayer;
+            //OnUpdate += TouchPlayer;
         }
 
         //Check to see if the Enemy has touched a Player and remove itself if so
@@ -44,20 +44,13 @@ namespace GameFramework
             List<Entity> touched = CurrentScene.GetEntities(X, Y);
 
             //Check if any of them are Players
-            bool hit = false;
             foreach (Entity e in touched)
             {
                 if (e is Player)
                 {
-                    hit = true;
+                    CurrentScene.RemoveEntity(this);
                     break;
                 }
-            }
-
-            //If we hit a Player, remove this Enemy from the Scene
-            if (hit)
-            {
-                CurrentScene.RemoveEntity(this);
             }
         }
 
