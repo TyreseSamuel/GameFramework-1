@@ -10,7 +10,8 @@ namespace GameFramework
     {
         static void Main(string[] args)
         {
-            //Examples();
+            //VectorTest();
+            //MatrixTest();
             //return;
 
             //Create a new Game and Run it
@@ -18,7 +19,7 @@ namespace GameFramework
             game.Run();
         }
 
-        static void Examples()
+        static void VectorTest()
         {
             Console.WriteLine(new Vector2(1f, 0f).Dot(new Vector2(0f, 1f)));
             Console.WriteLine(new Vector2(1f, 1f).Dot(new Vector2(-1f, -1f)));
@@ -66,6 +67,18 @@ namespace GameFramework
                 Console.WriteLine("I'VE GOT YOU IN MY SIGHTS");
             }
             
+            Console.ReadKey();
+        }
+
+        static void MatrixTest()
+        {
+            Matrix3 a = new Matrix3(1, 4, 7, 2, 5, 8, 3, 6, 9);
+            Matrix3 b = new Matrix3(9, 6, 3, 8, 5, 2, 7, 4, 1);
+            Matrix3 c = a * b;
+            Console.WriteLine(c);
+
+            Console.WriteLine(c * new Vector3(2, 4, 6));
+
             Console.ReadKey();
         }
     }

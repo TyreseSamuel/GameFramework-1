@@ -9,7 +9,7 @@ namespace GameFramework
     class Matrix2
     {
         //Static reference to the identity matrix
-        public static Matrix2 identity = new Matrix2();
+        public static Matrix2 Identity = new Matrix2();
 
         //Each value stored in the matrix
         public float m11, m12, m21, m22;
@@ -26,6 +26,20 @@ namespace GameFramework
         {
             this.m11 = m11; this.m12 = m12;
             this.m21 = m22; this.m22 = m22;
+        }
+
+        //Creates a copy of the specified Matrix2
+        public Matrix2(Matrix2 matrix2)
+        {
+            m11 = matrix2.m11; m12 = matrix2.m12;
+            m21 = matrix2.m21; m22 = matrix2.m22;
+        }
+
+        public override string ToString()
+        {
+            return
+                "{[" + m11 + ", " + m12 + "]," +
+                "[" + m21 + ", " + m22 + "]}";
         }
 
         //Returns the transpose of the Matrix2

@@ -74,7 +74,7 @@ namespace GameFramework
                 //int mouseY = (RL.GetMouseY() - 240) / 16;
                 //Raylib.Vector3 cameraPosition = new Raylib.Vector3(mouseX, mouseY, -100);
                 //Raylib.Vector3 cameraTarget = new Raylib.Vector3(mouseX, mouseY, 0);
-                //Raylib.Vector3 cameraUp = new Raylib.Vector3(1, -1, 1);
+                //Raylib.Vector3 cameraUp = new Raylib.Vector3(0, -1, 0);
 
                 //_camera = new Camera3D(cameraPosition, cameraTarget, cameraUp);
 

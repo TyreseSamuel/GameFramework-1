@@ -9,7 +9,7 @@ namespace GameFramework
     class Enemy : Entity
     {
         private Direction _facing;
-        public float Speed { get; set; } = 0.05f;
+        public float Speed { get; set; } = 0.25f;
 
         //Creates a new Enemy represented by the 'e' symbol and rat image
         public Enemy() : this('e', "images/tile210.png")
@@ -34,7 +34,7 @@ namespace GameFramework
             _facing = Direction.North;
             //Add Move and TouchPlayer to the OnUpdate Event
             OnUpdate += Move;
-            //OnUpdate += TouchPlayer;
+            OnUpdate += TouchPlayer;
         }
 
         //Check to see if the Enemy has touched a Player and remove itself if so
